@@ -8,6 +8,9 @@
 
 from .core import judge, make_secret
 
+# ===== ② 入力コマンドに足す（ヒント など）: ここに書く（import もここに） =====
+from .highlow import highlow
+
 
 def play(digits=3):
     secret = make_secret(digits)
@@ -23,6 +26,11 @@ def play(digits=3):
         # 例:  from .hint import hint
         #      if guess == "h":
         #          print(hint(secret)); continue
+
+        # 追加部分(highlow)
+        if guess == "highlow":
+            print("High/Low:", highlow(secret))
+            continue
 
         if len(guess) != digits or not guess.isdigit():
             print(f"{digits} 桁の数字で入力してね")
