@@ -11,6 +11,8 @@ from .core import judge, make_secret
 # ===== ② 入力コマンドに足す（ヒント など）: ここに書く（import もここに） =====
 from .highlow import highlow
 
+# 入力した数字が含まれているか判定
+from .check import check
 
 def play(digits=3):
     secret = make_secret(digits)
@@ -19,6 +21,7 @@ def play(digits=3):
     # ===== ① 開始時に足す（難易度・あいさつ など）: ここに書く =====
 
     tries = 0
+    check_used = False
     while True:
         guess = input("予想 > ").strip()
 
@@ -31,7 +34,29 @@ def play(digits=3):
         if guess == "highlow":
             print("High/Low:", highlow(secret))
             continue
+        
+                # 追加部分(check)
+        if guess == "check":
 
+            if check_used:
+                print("checkは1回しか使えません。")
+                continue
+
+            number = input("調べたい数字（0～9）> ").strip()
+
+            if len(number) != 1 or not number.isdigit():
+                print("0～9の数字を1つ入力してください")
+                continue
+
+            check_used = True
+
+            if check(secret, number):
+                print(f"{number} は答えに含まれています。")
+            else:
+                print(f"{number} は答えに含まれていません。")
+
+            continue
+        
         if len(guess) != digits or not guess.isdigit():
             print(f"{digits} 桁の数字で入力してね")
             continue
