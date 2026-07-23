@@ -16,26 +16,24 @@ from .check import check
 
 def play(digits=3):
     secret = make_secret(digits)
-    print(f"Hit & Blow（{digits} 桁・重複なし）")
+    print(f"Hit & Blow（{digits} 桁・重複なし）\n")
+    print("【highlowと入力】0-4はL, 5-9はHと表示\n【checkと入力】任意の数字が含まれているか確認，1回のみ")
 
     # ===== ① 開始時に足す（難易度・あいさつ など）: ここに書く =====
+    from .time import start_timer, stop_timer, register_score, display_ranking
+    start_time = start_timer()
 
     tries = 0
     check_used = False
     while True:
         guess = input("予想 > ").strip()
 
-        # ===== ② 入力コマンドに足す（ヒント など）: ここに書く（import もここに） =====
-        # 例:  from .hint import hint
-        #      if guess == "h":
-        #          print(hint(secret)); continue
-
         # 追加部分(highlow)
         if guess == "highlow":
             print("High/Low:", highlow(secret))
             continue
         
-                # 追加部分(check)
+        # 追加部分(check)
         if guess == "check":
 
             if check_used:
@@ -66,6 +64,11 @@ def play(digits=3):
         if hit == digits:
 
             # ===== ③ 勝利時に足す（スコア・履歴 など）: ここに書く =====
-
+            elapsed = stop_timer(start_time)
             print(f"正解！ {tries} 回で当たり（答え {secret}）")
+            print(f"クリアタイム: {elapsed:.2f} 秒")
+
+            # スコアの登録とランキング表示
+            register_score(elapsed, digits)
+            display_ranking()
             break
